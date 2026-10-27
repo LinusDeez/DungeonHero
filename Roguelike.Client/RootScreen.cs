@@ -16,7 +16,7 @@ public class RootScreen : ScreenObject
 
         var mapConsole = new SadConsole.Console(state.Map.Width, state.Map.Height);
         mapConsole.Position = new Point(0, 11);
-        MapRenderer.Draw(state.Map, mapConsole);
+        MapRenderer.Draw(state, mapConsole);
         Children.Add(mapConsole);
 
         var messageConsole = new SadConsole.Console(80, 11);

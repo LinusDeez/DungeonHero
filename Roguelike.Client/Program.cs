@@ -5,8 +5,10 @@ using Roguelike.Core;
 
 Settings.WindowTitle = "Roguelike";
 
-var generator = new MapGenerator(80, 48);
-var gameState = new GameState(generator.CreateMap());
+var player = new Player();
+var map = new MapGenerator(80, 48).CreateMap();
+map.UpdatePlayerFov(player);
+var gameState = new GameState(map, player);
 
 Builder config = new Builder()
     .SetWindowSizeInCells(100, 70)

@@ -13,6 +13,6 @@ public static class Colors
     public static Color Wall { get; } = Swatch.Secondary;
     public static Color WallBackgroundFov { get; } = Swatch.SecondaryDarker;
     public static Color WallFov { get; } = Swatch.SecondaryLighter;
-
     public static Color TextHeading { get; } = Swatch.DbLight;
+    public static Color Player { get; } = Swatch.DbLight;
 }

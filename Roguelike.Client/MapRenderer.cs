@@ -6,14 +6,16 @@ namespace Roguelike.Client;
 
 public static class MapRenderer
 {
-    public static void Draw(DungeonMap map, SadConsole.Console console)
+    public static void Draw(GameState state, SadConsole.Console console)
     {
         console.Clear();
 
-        foreach (ICell cell in map.GetAllCells())
+        foreach (ICell cell in state.Map.GetAllCells())
         {
             DrawCell(cell, console);
         }
+
+        console.SetGlyph(state.Player.X, state.Player.Y, '@', Colors.Player, Colors.FloorBackgroundFov);
     }
 
     private static void DrawCell(ICell cell, SadConsole.Console console)
