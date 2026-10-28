@@ -25,4 +25,40 @@ public class MonsterTests
         Assert.NotEmpty(map.Monsters);
         Assert.All(map.Monsters, monster => Assert.False(map.IsWalkable(monster.X, monster.Y)));
     }
+
+    [Fact]
+    public void GetMonstersInFov_FarAwayMonster_IsNotIncluded()
+    {
+        var map = TestMaps.CreateOpenMap(80, 48);
+        var player = new Player();
+        player.X = 10;
+        player.Y = 10;
+        map.SetActorPosition(player, player.X, player.Y);
+
+        var goblin = Goblin.Create(1, new DotNetRandom(42));
+        goblin.X = 70;
+        goblin.Y = 40;
+        map.AddMonster(goblin);
+
+        Assert.Empty(map.GetMonstersInFov());
+    }
+
+    [Fact]
+    public void GetMonstersInFov_NearbyMonster_IsIncluded()
+    {
+        var map = TestMaps.CreateOpenMap(80, 48);
+        var player = new Player();
+        player.X = 10;
+        player.Y = 10;
+        map.SetActorPosition(player, player.X, player.Y);
+
+        var goblin = Goblin.Create(1, new DotNetRandom(42));
+        goblin.X = 11;
+        goblin.Y = 10;
+        map.AddMonster(goblin);
+
+        Assert.Single(map.GetMonstersInFov());
+    }
+
+
 }

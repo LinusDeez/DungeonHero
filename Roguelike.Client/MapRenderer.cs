@@ -58,11 +58,10 @@ public static class MapRenderer
     {
         if (map.IsInFov(monster.X, monster.Y))
         {
-            console.SetGlyph(monster.X, monster.Y, 'g', Colors.Goblin, Colors.FloorBackgroundFov);
+            console.SetGlyph(monster.X, monster.Y, MonsterLook.Glyph(monster), MonsterLook.Color(monster), Colors.FloorBackgroundFov);
         }
         else if (map.GetCell(monster.X, monster.Y).IsExplored)
         {
-            // TODO: Boden zeichnen ('.' in Colors.Floor / Colors.FloorBackground)
             console.SetGlyph(monster.X, monster.Y, '.', Colors.Floor, Colors.FloorBackground);
         }
     }

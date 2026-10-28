@@ -10,6 +10,7 @@ public class RootScreen : ScreenObject
     private readonly GameState _state;
     private readonly CommandSystem _commands;
     private readonly SadConsole.Console _mapConsole;
+    private readonly SadConsole.Console _statsConsole;
 
     public RootScreen(GameState state, CommandSystem commands)
     {
@@ -32,10 +33,10 @@ public class RootScreen : ScreenObject
         MessageRenderer.Draw(state.Messages, messageConsole);
         Children.Add(messageConsole);
 
-        var statsConsole = new SadConsole.Console(20, 70);
-        statsConsole.Position = new Point(80, 0);
-        StatsRenderer.Draw(state.Player, statsConsole);
-        Children.Add(statsConsole);
+        _statsConsole = new SadConsole.Console(20, 70);
+        _statsConsole.Position = new Point(80, 0);
+        StatsRenderer.Draw(state, _statsConsole);
+        Children.Add(_statsConsole);
     }
 
     public override bool ProcessKeyboard(Keyboard keyboard)
@@ -66,6 +67,7 @@ public class RootScreen : ScreenObject
         if (moved)
         {
             MapRenderer.Draw(_state, _mapConsole);
+            StatsRenderer.Draw(_state, _statsConsole);
         }
 
         return true;

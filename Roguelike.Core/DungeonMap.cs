@@ -79,4 +79,9 @@ public class DungeonMap : Map
 
         return null;
     }
+
+    public IEnumerable<Monster> GetMonstersInFov()
+    {
+        return _monsters.Where(monster => IsInFov(monster.X, monster.Y));
+    }
 }

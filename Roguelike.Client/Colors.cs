@@ -18,4 +18,6 @@ public static class Colors
     public static Color Text { get; } = Color.White;
     public static Color Gold { get; } = Swatch.DbSun;
     public static Color Goblin { get; } = Swatch.DbBrightWood;
+    public static Color HealthBar { get; } = Swatch.DbBlood;
+    public static Color HealthBarEmpty { get; } = Swatch.DbOldBlood;
 }
