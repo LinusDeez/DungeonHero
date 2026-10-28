@@ -31,6 +31,23 @@ public class MapGenerator(int width, int height, int maxRooms, int roomMaxSize, 
             CreateRoom(map, room);
         }
 
+        for (int r = 1; r < map.Rooms.Count; r++)
+        {
+            var previous = map.Rooms[r-1].Center;
+            var current = map.Rooms[r].Center;
+
+            if (random.Next(1, 2) == 1)
+            {
+                CreateHorizontalTunnel(map, previous.X, current.X, previous.Y);
+                CreateVerticalTunnel(map, previous.Y, current.Y, current.X);
+            }
+            else
+            {
+                CreateVerticalTunnel(map, previous.Y, current.Y, previous.X);
+                CreateHorizontalTunnel(map, previous.X, current.X, current.Y);
+            }
+        }
+
         return map;
     }
 
@@ -40,8 +57,24 @@ public class MapGenerator(int width, int height, int maxRooms, int roomMaxSize, 
         {
             for (int y = room.Top +1; y < room.Bottom; y++)
             {
-                map.SetCellProperties(x, y, true, true, true);
+                map.SetCellProperties(x, y, true, true, false);
             }
+        }
+    }
+
+    private static void CreateHorizontalTunnel(DungeonMap map, int xStart, int xEnd, int y)
+    {
+        for (int x = Math.Min(xStart, xEnd); x <= Math.Max(xStart, xEnd); x++)
+        {
+            map.SetCellProperties(x, y, true, true, false);
+        }
+    }
+
+    private static void CreateVerticalTunnel(DungeonMap map, int yStart, int yEnd, int x)
+    {
+        for (int y = Math.Min(yStart, yEnd); y <= Math.Max(yStart, yEnd); y++)
+        {
+            map.SetCellProperties(x, y, true, true, false);
         }
     }
 }

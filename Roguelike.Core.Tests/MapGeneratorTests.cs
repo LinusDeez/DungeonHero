@@ -1,5 +1,6 @@
 using RogueSharp.Random;
 using Roguelike.Core;
+using RogueSharp;
 
 namespace Roguelike.Core.Tests;
 
@@ -46,4 +47,31 @@ public class MapGeneratorTests
 
         Assert.True(map.IsWalkable(room.Center.X, room.Center.Y));
     }
+
+    [Fact]
+    public void PlacePlayer_PutsPlayerInFirstRoomCenter()
+    {
+        var map = CreateMap(seed: 42);
+        var player = new Player();
+
+        map.PlacePlayer(player);
+
+        Assert.Equal(map.Rooms[0].Center.X, player.X);
+        Assert.Equal(map.Rooms[0].Center.Y, player.Y);
+    }
+
+    [Fact]
+    public void CreateMap_AllRoomsAreReachable()
+    {
+        var map = CreateMap(seed: 42);
+        var pathFinder = new PathFinder(map);
+        var start = map.GetCell(map.Rooms[0].Center.X, map.Rooms[0].Center.Y);
+
+        Assert.All(map.Rooms, room =>
+        {
+            var goal = map.GetCell(room.Center.X, room.Center.Y);
+            Assert.NotNull(pathFinder.TryFindShortestPath(start, goal));
+        });
+    }
+
 }

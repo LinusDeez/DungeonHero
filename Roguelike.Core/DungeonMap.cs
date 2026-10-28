@@ -23,6 +23,14 @@ public class DungeonMap : Map
         SetCellProperties(cell.X, cell.Y, cell.IsTransparent, isWalkable, cell.IsExplored);
     }
 
+    public void PlacePlayer(Player player)
+    {
+        player.X = Rooms[0].Center.X;
+        player.Y = Rooms[0].Center.Y;
+        SetActorPosition(player, player.X, player.Y);
+
+    }
+
     public bool SetActorPosition(Actor actor, int x, int y)
     {
         if (!IsWalkable(x, y))
