@@ -18,11 +18,13 @@ gameState.Messages.Add("The rogue arrives on level 1");
 gameState.Messages.Add($"Level created with seed '{seed}'");
 var commands = new CommandSystem(gameState);
 
+string fontPath = Path.Combine(AppContext.BaseDirectory, "Fonts", "Cheepicus12.font");
+
 Builder config = new Builder()
     .SetWindowSizeInCells(100, 70)
     .SetStartingScreen(host => new RootScreen(gameState, commands))
     .IsStartingScreenFocused(true)
-    .SetDefaultFontSize(IFont.Sizes.Half);
+    .ConfigureFonts((fonts, host) => fonts.UseCustomFont(fontPath));
 
 
 Game.Create(config);
