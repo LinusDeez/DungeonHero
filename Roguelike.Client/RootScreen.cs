@@ -29,8 +29,7 @@ public class RootScreen : ScreenObject
 
         var messageConsole = new SadConsole.Console(80, 11);
         messageConsole.Position = new Point(0, _mapConsole.Position.Y + _mapConsole.Height);
-        messageConsole.Fill(background: Swatch.DbDeepWater);
-        messageConsole.Print(1, 1, "Messages", Colors.TextHeading);
+        MessageRenderer.Draw(state.Messages, messageConsole);
         Children.Add(messageConsole);
 
         var statsConsole = new SadConsole.Console(20, 70);

@@ -14,6 +14,8 @@ var player = new Player();
 map.PlacePlayer(player);
 
 var gameState = new GameState(map, player);
+gameState.Messages.Add("The rogue arrives on level 1");
+gameState.Messages.Add($"Level created with seed '{seed}'");
 var commands = new CommandSystem(gameState);
 
 Builder config = new Builder()

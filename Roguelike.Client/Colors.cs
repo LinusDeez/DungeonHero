@@ -15,4 +15,5 @@ public static class Colors
     public static Color WallFov { get; } = Swatch.SecondaryLighter;
     public static Color TextHeading { get; } = Swatch.DbLight;
     public static Color Player { get; } = Swatch.DbLight;
+    public static Color Text { get; } = Color.White;
 }
