@@ -84,4 +84,15 @@ public class DungeonMap : Map
     {
         return _monsters.Where(monster => IsInFov(monster.X, monster.Y));
     }
+
+    public Monster? GetMonsterAt(int x, int y)
+    {
+        return _monsters.FirstOrDefault(monster => monster.X == x && monster.Y == y);
+    }
+
+    public void RemoveMonster(Monster monster)
+    {
+        _monsters.Remove(monster);
+        SetIsWalkable(monster.X, monster.Y, true);
+    }
 }

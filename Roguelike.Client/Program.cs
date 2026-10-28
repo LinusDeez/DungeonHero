@@ -19,7 +19,7 @@ generator.PlaceMonsters(map);
 var gameState = new GameState(map, player);
 gameState.Messages.Add("The rogue arrives on level 1");
 gameState.Messages.Add($"Level created with seed '{seed}'");
-var commands = new CommandSystem(gameState);
+var commands = new CommandSystem(gameState, random);
 
 string fontPath = Path.Combine(AppContext.BaseDirectory, "Fonts", "Cheepicus12.font");
 

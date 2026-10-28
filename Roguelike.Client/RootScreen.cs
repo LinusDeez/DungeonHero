@@ -11,6 +11,7 @@ public class RootScreen : ScreenObject
     private readonly CommandSystem _commands;
     private readonly SadConsole.Console _mapConsole;
     private readonly SadConsole.Console _statsConsole;
+    private readonly SadConsole.Console _messageConsole;
 
     public RootScreen(GameState state, CommandSystem commands)
     {
@@ -28,10 +29,10 @@ public class RootScreen : ScreenObject
         MapRenderer.Draw(state, _mapConsole);
         Children.Add(_mapConsole);
 
-        var messageConsole = new SadConsole.Console(80, 11);
-        messageConsole.Position = new Point(0, _mapConsole.Position.Y + _mapConsole.Height);
-        MessageRenderer.Draw(state.Messages, messageConsole);
-        Children.Add(messageConsole);
+        _messageConsole = new SadConsole.Console(80, 11);
+        _messageConsole.Position = new Point(0, _mapConsole.Position.Y + _mapConsole.Height);
+        MessageRenderer.Draw(state.Messages, _messageConsole);
+        Children.Add(_messageConsole);
 
         _statsConsole = new SadConsole.Console(20, 70);
         _statsConsole.Position = new Point(80, 0);
@@ -68,6 +69,7 @@ public class RootScreen : ScreenObject
         {
             MapRenderer.Draw(_state, _mapConsole);
             StatsRenderer.Draw(_state, _statsConsole);
+            MessageRenderer.Draw(_state.Messages, _messageConsole);
         }
 
         return true;
