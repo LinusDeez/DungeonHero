@@ -1,4 +1,5 @@
 using RogueSharp;
+using RogueSharp.Random;
 
 namespace Roguelike.Core;
 
@@ -52,4 +53,30 @@ public class DungeonMap : Map
     }
 
     public List<Rectangle> Rooms { get; } = [];
+
+    private readonly List<Monster> _monsters = [];
+    public IReadOnlyList<Monster> Monsters => _monsters;
+
+    public void AddMonster(Monster monster)
+    {
+        _monsters.Add(monster);
+        SetIsWalkable(monster.X, monster.Y, false);
+    }
+
+    public Point? GetRandomWalkableLocationInRoom(Rectangle room, IRandom random)
+    {
+        for (int i = 0; i < 100; i++)
+        {
+            int x = random.Next(room.Left + 1, room.Right - 1);
+            int y = random.Next(room.Top + 1, room.Bottom - 1);
+
+            if (IsWalkable(x, y))
+            {
+                return new Point(x, y);
+            }
+            
+        }
+
+        return null;
+    }
 }

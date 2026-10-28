@@ -1,5 +1,7 @@
 using RogueSharp;
 using RogueSharp.Random;
+using RogueSharp.DiceNotation;
+using Roguelike.Core.Monsters;
 
 namespace Roguelike.Core;
 
@@ -50,6 +52,33 @@ public class MapGenerator(int width, int height, int maxRooms, int roomMaxSize, 
 
         return map;
     }
+    public void PlaceMonsters(DungeonMap map)
+    {
+        // Starting room stays empty.
+        for (int r = 1; r < map.Rooms.Count; r++)
+        {
+            Rectangle room = map.Rooms[r];
+
+            if (Dice.Roll("1D10", random) < 7)
+            {
+                int count = Dice.Roll("1D4", random);
+
+                for (int i = 0; i < count; i++)
+                {
+                    Point? location = map.GetRandomWalkableLocationInRoom(room, random);
+
+                if (location.HasValue)
+                    {
+                        var goblin = Goblin.Create(1, random);
+                        goblin.X = location.Value.X;
+                        goblin.Y = location.Value.Y;
+                        map.AddMonster(goblin);
+                    }
+                }
+            }
+        }
+    }
+
 
     private static void CreateRoom(DungeonMap map, Rectangle room)
     {

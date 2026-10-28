@@ -15,6 +15,11 @@ public static class MapRenderer
             DrawCell(cell, console);
         }
 
+        foreach (Monster monster in state.Map.Monsters)
+        {
+            DrawMonster(monster, state.Map, console);
+        }
+
         console.SetGlyph(state.Player.X, state.Player.Y, '@', Colors.Player, Colors.FloorBackgroundFov);
     }
 
@@ -46,6 +51,19 @@ public static class MapRenderer
             {
                 console.SetGlyph(cell.X, cell.Y, '#', Colors.Wall, Colors.WallBackground);
             }
+        }
+    }
+
+    private static void DrawMonster(Monster monster, DungeonMap map, SadConsole.Console console)
+    {
+        if (map.IsInFov(monster.X, monster.Y))
+        {
+            console.SetGlyph(monster.X, monster.Y, 'g', Colors.Goblin, Colors.FloorBackgroundFov);
+        }
+        else if (map.GetCell(monster.X, monster.Y).IsExplored)
+        {
+            // TODO: Boden zeichnen ('.' in Colors.Floor / Colors.FloorBackground)
+            console.SetGlyph(monster.X, monster.Y, '.', Colors.Floor, Colors.FloorBackground);
         }
     }
 }

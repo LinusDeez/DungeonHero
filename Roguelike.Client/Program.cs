@@ -8,10 +8,13 @@ int seed = Environment.TickCount;
 var random = new DotNetRandom(seed);
 Settings.WindowTitle = $"Roguelike - Seed {seed}";
 
-var map = new MapGenerator(80, 48, 20, 13, 7, random).CreateMap();
+var generator = new MapGenerator(80, 48, 20, 13, 7, random);
+var map = generator.CreateMap();
 
 var player = new Player();
 map.PlacePlayer(player);
+generator.PlaceMonsters(map);
+
 
 var gameState = new GameState(map, player);
 gameState.Messages.Add("The rogue arrives on level 1");
