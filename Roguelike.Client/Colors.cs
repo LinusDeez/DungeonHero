@@ -16,4 +16,6 @@ public static class Colors
     public static Color TextHeading { get; } = Swatch.DbLight;
     public static Color Player { get; } = Swatch.DbLight;
     public static Color Text { get; } = Color.White;
+    public static Color Gold { get; } = Swatch.DbSun;
+
 }

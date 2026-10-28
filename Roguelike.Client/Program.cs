@@ -26,7 +26,6 @@ Builder config = new Builder()
     .IsStartingScreenFocused(true)
     .ConfigureFonts((fonts, host) => fonts.UseCustomFont(fontPath));
 
-
 Game.Create(config);
 Game.Instance.Run();
 Game.Instance.Dispose();

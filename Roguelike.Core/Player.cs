@@ -6,7 +6,13 @@ public class Player : Actor
     {
         Name = "Rogue";
         Awareness = 15;
-        X = 10;
-        Y = 10;
+        Attack = 2;
+        AttackChance = 50;
+        Defense = 2;
+        DefenseChance = 40;
+        Gold = 0;
+        Health = 100;
+        MaxHealth = 100;
+        Speed = 10;
     }
 }

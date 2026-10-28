@@ -34,8 +34,7 @@ public class RootScreen : ScreenObject
 
         var statsConsole = new SadConsole.Console(20, 70);
         statsConsole.Position = new Point(80, 0);
-        statsConsole.Fill(background: Swatch.DbOldStone);
-        statsConsole.Print(1, 1, "Stats", Colors.TextHeading);
+        StatsRenderer.Draw(state.Player, statsConsole);
         Children.Add(statsConsole);
     }
 
