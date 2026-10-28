@@ -8,7 +8,7 @@ public class FieldOfViewTests
     public void PlayerCellIsInFov()
     {
         var player = new Player();
-        var map = new MapGenerator(80, 48).CreateMap();
+        var map = TestMaps.CreateOpenMap(80, 48);
 
         map.UpdatePlayerFov(player);
 
@@ -19,7 +19,7 @@ public class FieldOfViewTests
     public void FarAwayCellIsNotInFov()
     {
         var player = new Player();
-        var map = new MapGenerator(80, 48).CreateMap();
+        var map = TestMaps.CreateOpenMap(80, 48);
 
         map.UpdatePlayerFov(player);
 

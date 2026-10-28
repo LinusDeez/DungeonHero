@@ -42,4 +42,6 @@ public class DungeonMap : Map
 
         return true;
     }
+
+    public List<Rectangle> Rooms { get; } = [];
 }

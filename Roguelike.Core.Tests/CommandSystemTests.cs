@@ -8,7 +8,7 @@ public class CommandSystemTests
     public void MovePlayer_Right_IncreasesX()
     {
         var player = new Player();
-        var map = new MapGenerator(80, 48).CreateMap();
+        var map = TestMaps.CreateOpenMap(80, 48);
         map.SetActorPosition(player, player.X, player.Y);
         var commands = new CommandSystem(new GameState(map, player));
 
@@ -23,7 +23,7 @@ public class CommandSystemTests
     {
         var player = new Player();
         player.X = 1;
-        var map = new MapGenerator(80, 48).CreateMap();
+        var map = TestMaps.CreateOpenMap(80, 48);
         map.SetActorPosition(player, player.X, player.Y);
         var commands = new CommandSystem(new GameState(map, player));
 

@@ -1,29 +1,47 @@
 using RogueSharp;
+using RogueSharp.Random;
 
 namespace Roguelike.Core;
 
-public class MapGenerator(int width, int height)
+public class MapGenerator(int width, int height, int maxRooms, int roomMaxSize, int roomMinSize, IRandom random)
 {
     public DungeonMap CreateMap()
     {
-        DungeonMap map = new DungeonMap();
+        var map = new DungeonMap();
         map.Initialize(width, height);
 
-        foreach (ICell cell in map.GetAllCells())
+        for (int i = 0; i < maxRooms; i++)
         {
-            map.SetCellProperties(cell.X, cell.Y, isTransparent: true, isWalkable: true, isExplored: true);
+            int roomWidth = random.Next(roomMinSize, roomMaxSize);
+            int roomHeight = random.Next(roomMinSize, roomMaxSize);
+            int roomX = random.Next(0, width - roomWidth - 1);
+            int roomY = random.Next(0, height - roomHeight - 1);
+
+            var newRoom = new Rectangle(roomX, roomY, roomWidth, roomHeight);
+
+            bool overlaps = map.Rooms.Any(room => newRoom.Intersects(room));
+            if (!overlaps)
+            {
+                map.Rooms.Add(newRoom);
+            }
         }
 
-        foreach (ICell cell in map.GetCellsInRows(0, height - 1))
+        foreach (Rectangle room in map.Rooms)
         {
-            map.SetCellProperties(cell.X, cell.Y, isTransparent: false, isWalkable: false, isExplored: true);
-        }
-
-        foreach (ICell cell in map.GetCellsInColumns(0, width - 1))
-        {
-            map.SetCellProperties(cell.X, cell.Y, isTransparent: false, isWalkable: false, isExplored: true);
+            CreateRoom(map, room);
         }
 
         return map;
+    }
+
+    private static void CreateRoom(DungeonMap map, Rectangle room)
+    {
+        for (int x = room.Left + 1; x < room.Right; x++)
+        {
+            for (int y = room.Top +1; y < room.Bottom; y++)
+            {
+                map.SetCellProperties(x, y, true, true, true);
+            }
+        }
     }
 }
