@@ -77,13 +77,27 @@ public class CommandSystem(GameState state, IRandom random)
         if (defender is Monster monster)
         {
             state.Map.RemoveMonster(monster);
+            state.Schedule.Remove(monster);
             state.Player.Gold += monster.Gold;
             state.Messages.Add($"{monster.Name} dies. You find {monster.Gold} gold.");
         } 
         else if (defender is Player) 
         {
             state.Messages.Add($"You died.");    
+        }   
+    }
+
+    public void EndPlayerTurn()
+    {
+        state.Schedule.Add(state.Player);
+        ActivateMonsters();
+    }
+
+    public void ActivateMonsters()
+    {
+        while (state.Schedule.Get() is Monster monster)
+        {
+            state.Schedule.Add(monster);
         }
-        
     }
 }

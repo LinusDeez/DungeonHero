@@ -67,6 +67,7 @@ public class RootScreen : ScreenObject
 
         if (moved)
         {
+            _commands.EndPlayerTurn();
             MapRenderer.Draw(_state, _mapConsole);
             StatsRenderer.Draw(_state, _statsConsole);
             MessageRenderer.Draw(_state.Messages, _messageConsole);

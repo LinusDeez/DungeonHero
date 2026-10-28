@@ -91,4 +91,27 @@ public class CommandSystemTests
         Assert.Empty(map.Monsters);
         Assert.Equal(goldCombinedBefore, player.Gold);
     }
+
+    [Fact]
+    public void EndPlayerTurn_RunsMonstersUntilPlayerIsNext()
+    {
+        var map = TestMaps.CreateOpenMap(80, 48);
+        var player = new Player();
+        player.X = 10;
+        player.Y = 10;
+        map.SetActorPosition(player, player.X, player.Y);
+
+        var goblin = Goblin.Create(1, new DotNetRandom(42));
+        goblin.X = 30;
+        goblin.Y = 30;
+        map.AddMonster(goblin);
+
+        var state = new GameState(map, player);
+        var commands = new CommandSystem(state, new DotNetRandom(42));
+        commands.ActivateMonsters();
+
+        commands.EndPlayerTurn();
+
+        Assert.Equal(20, state.Schedule.Time);
+}
 }
