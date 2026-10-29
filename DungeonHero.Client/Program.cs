@@ -28,7 +28,12 @@ Builder config = new Builder()
     .SetWindowSizeInCells(100, 70)
     .SetStartingScreen(host => new RootScreen(gameState, commands))
     .IsStartingScreenFocused(true)
-    .ConfigureFonts((fonts, host) => fonts.UseCustomFont(fontPath));
+    .ConfigureFonts((fonts, host) => fonts.UseCustomFont(fontPath))
+    .OnStart((sender, host) =>
+     {
+        host.Keyboard.InitialRepeatDelay = TimeSpan.FromMilliseconds(150);
+        host.Keyboard.RepeatDelay = TimeSpan.FromMilliseconds(200); 
+     });
 
 Game.Create(config);
 Game.Instance.Run();
