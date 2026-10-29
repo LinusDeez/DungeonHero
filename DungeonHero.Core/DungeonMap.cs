@@ -1,0 +1,134 @@
+using RogueSharp;
+using RogueSharp.Random;
+
+namespace DungeonHero.Core;
+
+public class DungeonMap : Map
+{
+    private readonly List<Monster> _monsters = [];
+    private readonly List<Door> _doors = [];
+
+    public List<Rectangle> Rooms { get; } = [];
+    public IReadOnlyList<Monster> Monsters => _monsters;
+    public IReadOnlyList<Door> Doors => _doors;
+    public Stairs? StairsUp { get; set; }
+    public Stairs? StairsDown { get; set; }
+
+    private void OpenDoor(Actor actor, int x, int y)
+    {
+        Door? door = GetDoor(x, y);
+        if (door != null && !door.IsOpen)
+        {
+            door.IsOpen = true;
+            ICell cell = GetCell(x, y);
+            SetCellProperties(x, y, isTransparent: true, cell.IsWalkable, cell.IsExplored);
+        }
+    }
+
+    public void UpdatePlayerFov(Player player)
+    {
+        ComputeFov(player.X, player.Y, player.Awareness, true);
+
+        foreach (ICell cell in GetAllCells())
+        {
+            if (IsInFov(cell.X, cell.Y))
+            {
+                SetCellProperties(cell.X, cell.Y, cell.IsTransparent, cell.IsWalkable, isExplored: true);
+            }
+        }
+    }
+
+    public void SetIsWalkable(int x, int y, bool isWalkable)
+    {
+        ICell cell = GetCell(x, y);
+        SetCellProperties(cell.X, cell.Y, cell.IsTransparent, isWalkable, cell.IsExplored);
+    }
+
+    public void PlacePlayer(Player player)
+    {
+        player.X = Rooms[0].Center.X;
+        player.Y = Rooms[0].Center.Y;
+        SetActorPosition(player, player.X, player.Y);
+
+    }
+
+    public bool SetActorPosition(Actor actor, int x, int y)
+    {
+        if (!IsWalkable(x, y))
+        {
+            return false;
+        }
+
+        SetIsWalkable(actor.X, actor.Y, true);
+        actor.X = x;
+        actor.Y = y;
+        SetIsWalkable(actor.X, actor.Y, false);
+
+        OpenDoor(actor, x, y);
+
+        if (actor is Player player)
+        {
+            UpdatePlayerFov(player);
+        }
+
+        return true;
+    }
+
+    public void AddMonster(Monster monster)
+    {
+        _monsters.Add(monster);
+        SetIsWalkable(monster.X, monster.Y, false);
+    }
+
+    public Point? GetRandomWalkableLocationInRoom(Rectangle room, IRandom random)
+    {
+        for (int i = 0; i < 100; i++)
+        {
+            int x = random.Next(room.Left + 1, room.Right - 1);
+            int y = random.Next(room.Top + 1, room.Bottom - 1);
+
+            if (IsWalkable(x, y))
+            {
+                return new Point(x, y);
+            }
+            
+        }
+
+        return null;
+    }
+
+    public IEnumerable<Monster> GetMonstersInFov()
+    {
+        return _monsters.Where(monster => IsInFov(monster.X, monster.Y));
+    }
+
+    public Monster? GetMonsterAt(int x, int y)
+    {
+        return _monsters.FirstOrDefault(monster => monster.X == x && monster.Y == y);
+    }
+
+    public void RemoveMonster(Monster monster)
+    {
+        _monsters.Remove(monster);
+        SetIsWalkable(monster.X, monster.Y, true);
+    }
+
+    public void AddDoor(Door door)
+    {
+        _doors.Add(door);
+        ICell cell = GetCell(door.X, door.Y);
+        SetCellProperties(door.X, door.Y, isTransparent: false, cell.IsWalkable, cell.IsExplored);
+    }
+
+    public Door? GetDoor(int x, int y)
+    {
+        return _doors.FirstOrDefault(door => door.X == x && door.Y == y);
+    }
+
+    public bool CanMoveDownToNextLevel(Player player)
+    {
+        return StairsDown != null
+            && StairsDown.X == player.X
+            && StairsDown.Y == player.Y;
+    }
+}
