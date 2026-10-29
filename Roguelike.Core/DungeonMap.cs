@@ -5,6 +5,24 @@ namespace Roguelike.Core;
 
 public class DungeonMap : Map
 {
+    private readonly List<Monster> _monsters = [];
+    private readonly List<Door> _doors = [];
+
+    public List<Rectangle> Rooms { get; } = [];
+    public IReadOnlyList<Monster> Monsters => _monsters;
+    public IReadOnlyList<Door> Doors => _doors;
+
+    private void OpenDoor(Actor actor, int x, int y)
+    {
+        Door? door = GetDoor(x, y);
+        if (door != null && !door.IsOpen)
+        {
+            door.IsOpen = true;
+            ICell cell = GetCell(x, y);
+            SetCellProperties(x, y, isTransparent: true, cell.IsWalkable, cell.IsExplored);
+        }
+    }
+
     public void UpdatePlayerFov(Player player)
     {
         ComputeFov(player.X, player.Y, player.Awareness, true);
@@ -44,6 +62,8 @@ public class DungeonMap : Map
         actor.Y = y;
         SetIsWalkable(actor.X, actor.Y, false);
 
+        OpenDoor(actor, x, y);
+
         if (actor is Player player)
         {
             UpdatePlayerFov(player);
@@ -51,11 +71,6 @@ public class DungeonMap : Map
 
         return true;
     }
-
-    public List<Rectangle> Rooms { get; } = [];
-
-    private readonly List<Monster> _monsters = [];
-    public IReadOnlyList<Monster> Monsters => _monsters;
 
     public void AddMonster(Monster monster)
     {
@@ -94,5 +109,17 @@ public class DungeonMap : Map
     {
         _monsters.Remove(monster);
         SetIsWalkable(monster.X, monster.Y, true);
+    }
+
+    public void AddDoor(Door door)
+    {
+        _doors.Add(door);
+        ICell cell = GetCell(door.X, door.Y);
+        SetCellProperties(door.X, door.Y, isTransparent: false, cell.IsWalkable, cell.IsExplored);
+    }
+
+    public Door? GetDoor(int x, int y)
+    {
+        return _doors.FirstOrDefault(door => door.X == x && door.Y == y);
     }
 }

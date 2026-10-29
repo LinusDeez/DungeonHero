@@ -74,4 +74,12 @@ public class MapGeneratorTests
         });
     }
 
+    [Fact]
+    public void CreateMap_HasDoors()
+    {
+        var map = CreateMap(42);
+
+        Assert.NotEmpty(map.Doors);
+    }
+
 }

@@ -20,4 +20,8 @@ public static class Colors
     public static Color Goblin { get; } = Swatch.DbBrightWood;
     public static Color HealthBar { get; } = Swatch.DbBlood;
     public static Color HealthBarEmpty { get; } = Swatch.DbOldBlood;
+    public static Color Door { get; } = Swatch.ComplimentLighter;
+    public static Color DoorBackground { get; } = Swatch.ComplimentDarkest;
+    public static Color DoorFov { get; } = Swatch.ComplimentLightest;
+    public static Color DoorBackgroundFov { get; } = Swatch.ComplimentDarker;
 }

@@ -50,6 +50,11 @@ public class MapGenerator(int width, int height, int maxRooms, int roomMaxSize, 
             }
         }
 
+        foreach (Rectangle room in map.Rooms)
+        {
+            CreateDoors(map, room);
+        }
+
         return map;
     }
     public void PlaceMonsters(DungeonMap map)
@@ -105,5 +110,52 @@ public class MapGenerator(int width, int height, int maxRooms, int roomMaxSize, 
         {
             map.SetCellProperties(x, y, true, true, false);
         }
+    }
+
+    private static void CreateDoors(DungeonMap map, Rectangle room)
+    {
+        for (int x = room.Left; x <= room.Right; x++)
+        {
+            TryPlaceDoor(map, x, room.Top);
+            TryPlaceDoor(map, x, room.Bottom);
+        }
+
+        for (int y = room.Top; y <= room.Bottom; y++)
+        {
+            TryPlaceDoor(map, room.Left, y);
+            TryPlaceDoor(map, room.Right, y);
+        }
+    }
+
+    private static void TryPlaceDoor(DungeonMap map, int x, int y)
+    {
+        // Wall
+        if (!map.IsWalkable(x, y))
+        {
+            return;
+        }
+
+        bool doorNearby = map.GetDoor(x, y) != null
+            || map.GetDoor(x - 1, y) != null
+            || map.GetDoor(x + 1, y) != null
+            || map.GetDoor(x, y - 1) != null
+            || map.GetDoor(x, y + 1) != null;
+        if (doorNearby)
+        {
+            return;
+        }
+
+        bool left = map.IsWalkable(x - 1, y);
+        bool right = map.IsWalkable(x + 1, y);
+        bool top = map.IsWalkable(x, y - 1);
+        bool bottom = map.IsWalkable(x, y + 1);
+
+        bool isSideWallGap = left && right && !top && !bottom;
+        bool isTopBottomWallGap = !left && !right && top && bottom;
+
+        if (isSideWallGap || isTopBottomWallGap)
+        {
+            map.AddDoor(new Door(x, y));
+        } 
     }
 }

@@ -15,6 +15,11 @@ public static class MapRenderer
             DrawCell(cell, console);
         }
 
+        foreach (Door door in state.Map.Doors)
+        {
+            DrawDoor(door, state.Map, console);
+        }
+
         foreach (Monster monster in state.Map.Monsters)
         {
             DrawMonster(monster, state.Map, console);
@@ -63,6 +68,26 @@ public static class MapRenderer
         else if (map.GetCell(monster.X, monster.Y).IsExplored)
         {
             console.SetGlyph(monster.X, monster.Y, '.', Colors.Floor, Colors.FloorBackground);
+        }
+    }
+
+    private static void DrawDoor(Door door, DungeonMap map, SadConsole.Console console)
+    {
+        ICell cell = map.GetCell(door.X, door.Y);
+        if (!cell.IsExplored)
+        {
+            return;
+        }
+
+        char glyph = door.IsOpen ? '-' : '+';
+
+        if (cell.IsInFov)
+        {
+            console.SetGlyph(door.X, door.Y, glyph, Colors.DoorFov, Colors.DoorBackgroundFov);
+        }
+        else
+        {
+            console.SetGlyph(door.X, door.Y, glyph, Colors.Door, Colors.DoorBackground);
         }
     }
 }
