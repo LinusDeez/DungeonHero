@@ -18,4 +18,6 @@ public class GameState
             Schedule.Add(monster);
         }
     }
+
+    public bool GameIsOver => Player.Health <= 0;
 }

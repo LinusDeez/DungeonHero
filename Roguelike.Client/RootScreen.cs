@@ -44,6 +44,15 @@ public class RootScreen : ScreenObject
     {
         bool moved = false;
 
+        if (_state.GameIsOver)
+        {
+            if (keyboard.IsKeyPressed(Keys.Escape))
+            {
+                Game.Instance.MonoGameInstance.Exit();
+            }
+            return true;
+        }
+
         if (keyboard.IsKeyPressed(Keys.Up))
         {
             moved = _commands.MovePlayer(Core.Direction.Up);
@@ -59,10 +68,6 @@ public class RootScreen : ScreenObject
         else if (keyboard.IsKeyPressed(Keys.Right))
         {
             moved = _commands.MovePlayer(Core.Direction.Right);
-        }
-        else if (keyboard.IsKeyPressed(Keys.Escape))
-        {
-            Game.Instance.MonoGameInstance.Exit();
         }
 
         if (moved)

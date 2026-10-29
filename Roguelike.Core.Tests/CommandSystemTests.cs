@@ -113,5 +113,54 @@ public class CommandSystemTests
         commands.EndPlayerTurn();
 
         Assert.Equal(20, state.Schedule.Time);
-}
+    }
+
+    [Fact]
+    public void EndPlayerTurn_AdjacentGoblin_AttacksPlayer()
+    {
+        var map = TestMaps.CreateOpenMap(80, 48);
+        var player = new Player();
+        player.X = 10;
+        player.Y = 10;
+        player.Defense = 0;
+        map.SetActorPosition(player, player.X, player.Y);
+
+        var goblin = Goblin.Create(1, new DotNetRandom(42));
+        goblin.X = 11;
+        goblin.Y = 10;
+        goblin.Attack = 1;
+        goblin.AttackChance = 100;
+        map.AddMonster(goblin);
+
+        var state = new GameState(map, player);
+        var commands = new CommandSystem(state, new DotNetRandom(42));
+        commands.ActivateMonsters();
+
+        commands.EndPlayerTurn();
+
+        Assert.Equal(99, player.Health);
+    }
+
+    [Fact]
+    public void EndPlayerTurn_GoblinNearby_MovesTowardsPlayer()
+    {
+        var map = TestMaps.CreateOpenMap(80, 48);
+        var player = new Player();
+        player.X = 10;
+        player.Y = 10;
+        map.SetActorPosition(player, player.X, player.Y);
+
+        var goblin = Goblin.Create(1, new DotNetRandom(42));
+        goblin.X = 15;
+        goblin.Y = 10;
+        map.AddMonster(goblin);
+
+        var state = new GameState(map, player);
+        var commands = new CommandSystem(state, new DotNetRandom(42));
+        commands.ActivateMonsters();
+
+        commands.EndPlayerTurn();
+
+        Assert.Equal(14, goblin.X);
+    }
 }
