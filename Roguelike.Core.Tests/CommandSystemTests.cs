@@ -6,6 +6,13 @@ namespace Roguelike.Core.Tests;
 
 public class CommandSystemTests
 {
+    private static CommandSystem CreateCommands(GameState state)
+    {
+        var random = new DotNetRandom(42);
+        var generator = new MapGenerator(80, 48, 20, 13, 7, random);
+        return new CommandSystem(state, generator, random);
+    }
+
     [Fact]
     public void MovePlayer_Right_IncreasesX()
     {
@@ -14,7 +21,7 @@ public class CommandSystemTests
         player.Y = 10;
         var map = TestMaps.CreateOpenMap(80, 48);
         map.SetActorPosition(player, player.X, player.Y);
-        var commands = new CommandSystem(new GameState(map, player), new DotNetRandom(42));
+        var commands = CreateCommands(new GameState(map, player));
 
         bool moved = commands.MovePlayer(Direction.Right);
 
@@ -30,7 +37,7 @@ public class CommandSystemTests
         player.Y = 10;
         var map = TestMaps.CreateOpenMap(80, 48);
         map.SetActorPosition(player, player.X, player.Y);
-        var commands = new CommandSystem(new GameState(map, player), new DotNetRandom(42));
+        var commands = CreateCommands(new GameState(map, player));
 
         bool moved = commands.MovePlayer(Direction.Left);
         
@@ -55,7 +62,7 @@ public class CommandSystemTests
         goblin.Defense = 0;
         map.AddMonster(goblin);
 
-        var commands = new CommandSystem(new GameState(map, player), new DotNetRandom(42));
+        var commands = CreateCommands(new GameState(map, player));
         int healthBefore = goblin.Health;
 
         commands.MovePlayer(Direction.Right);
@@ -83,7 +90,7 @@ public class CommandSystemTests
         goblin.Defense = 0;
         map.AddMonster(goblin);
 
-        var commands = new CommandSystem(new GameState(map, player), new DotNetRandom(42));
+        var commands = CreateCommands(new GameState(map, player));
         int goldCombinedBefore = goblin.Gold + player.Gold;
 
         commands.MovePlayer(Direction.Right);
@@ -107,7 +114,7 @@ public class CommandSystemTests
         map.AddMonster(goblin);
 
         var state = new GameState(map, player);
-        var commands = new CommandSystem(state, new DotNetRandom(42));
+        var commands = CreateCommands(state);
         commands.ActivateMonsters();
 
         commands.EndPlayerTurn();
@@ -133,7 +140,7 @@ public class CommandSystemTests
         map.AddMonster(goblin);
 
         var state = new GameState(map, player);
-        var commands = new CommandSystem(state, new DotNetRandom(42));
+        var commands = CreateCommands(state);
         commands.ActivateMonsters();
 
         commands.EndPlayerTurn();
@@ -156,7 +163,7 @@ public class CommandSystemTests
         map.AddMonster(goblin);
 
         var state = new GameState(map, player);
-        var commands = new CommandSystem(state, new DotNetRandom(42));
+        var commands = CreateCommands(state);
         commands.ActivateMonsters();
 
         commands.EndPlayerTurn();

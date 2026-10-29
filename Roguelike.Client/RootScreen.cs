@@ -69,6 +69,10 @@ public class RootScreen : ScreenObject
         {
             moved = _commands.MovePlayer(Core.Direction.Right);
         }
+        else if (keyboard.IsKeyPressed(Keys.OemPeriod))
+        {
+            moved = _commands.MoveDownStairs();
+        }
 
         if (moved)
         {

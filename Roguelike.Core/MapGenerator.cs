@@ -55,9 +55,12 @@ public class MapGenerator(int width, int height, int maxRooms, int roomMaxSize, 
             CreateDoors(map, room);
         }
 
+        CreateStairs(map);
+
         return map;
     }
-    public void PlaceMonsters(DungeonMap map)
+
+    public void PlaceMonsters(DungeonMap map, int level)
     {
         // Starting room stays empty.
         for (int r = 1; r < map.Rooms.Count; r++)
@@ -74,7 +77,7 @@ public class MapGenerator(int width, int height, int maxRooms, int roomMaxSize, 
 
                 if (location.HasValue)
                     {
-                        var goblin = Goblin.Create(1, random);
+                        var goblin = Goblin.Create(level, random);
                         goblin.X = location.Value.X;
                         goblin.Y = location.Value.Y;
                         map.AddMonster(goblin);
@@ -157,5 +160,14 @@ public class MapGenerator(int width, int height, int maxRooms, int roomMaxSize, 
         {
             map.AddDoor(new Door(x, y));
         } 
+    }
+
+    private static void CreateStairs(DungeonMap map)
+    {
+        Point first = map.Rooms[0].Center;
+        Point last = map.Rooms[^1].Center;
+
+        map.StairsUp = new Stairs(first.X + 1, first.Y, IsUp: true);
+        map.StairsDown = new Stairs(last.X, last.Y, IsUp: false);
     }
 }

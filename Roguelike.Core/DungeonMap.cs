@@ -11,6 +11,8 @@ public class DungeonMap : Map
     public List<Rectangle> Rooms { get; } = [];
     public IReadOnlyList<Monster> Monsters => _monsters;
     public IReadOnlyList<Door> Doors => _doors;
+    public Stairs? StairsUp { get; set; }
+    public Stairs? StairsDown { get; set; }
 
     private void OpenDoor(Actor actor, int x, int y)
     {
@@ -121,5 +123,12 @@ public class DungeonMap : Map
     public Door? GetDoor(int x, int y)
     {
         return _doors.FirstOrDefault(door => door.X == x && door.Y == y);
+    }
+
+    public bool CanMoveDownToNextLevel(Player player)
+    {
+        return StairsDown != null
+            && StairsDown.X == player.X
+            && StairsDown.Y == player.Y;
     }
 }

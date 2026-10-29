@@ -20,7 +20,7 @@ public class MonsterTests
         var generator = new MapGenerator(80, 48, 20, 13, 7, new DotNetRandom(42));
         var map = generator.CreateMap();
 
-        generator.PlaceMonsters(map);
+        generator.PlaceMonsters(map, 1);
 
         Assert.NotEmpty(map.Monsters);
         Assert.All(map.Monsters, monster => Assert.False(map.IsWalkable(monster.X, monster.Y)));

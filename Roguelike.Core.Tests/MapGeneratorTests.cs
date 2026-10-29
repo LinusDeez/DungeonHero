@@ -82,4 +82,14 @@ public class MapGeneratorTests
         Assert.NotEmpty(map.Doors);
     }
 
+    [Fact]
+    public void CreateMap_StairsDownInLastRoomCenter()
+    {
+        var map = CreateMap(42);
+
+        Assert.NotNull(map.StairsDown);
+        Assert.Equal(map.Rooms[^1].Center.X, map.StairsDown.X);
+        Assert.Equal(map.Rooms[^1].Center.Y, map.StairsDown.Y);
+    }
+
 }

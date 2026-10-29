@@ -3,7 +3,7 @@ using RogueSharp.Random;
 
 namespace Roguelike.Core;
 
-public class CommandSystem(GameState state, IRandom random)
+public class CommandSystem(GameState state, MapGenerator generator, IRandom random)
 {
     private int CountSuccesses(int dice, int chance)
     {
@@ -169,5 +169,18 @@ public class CommandSystem(GameState state, IRandom random)
             MonsterTurn(monster);
             state.Schedule.Add(monster);
         }
+    }
+
+    public bool MoveDownStairs()
+    {
+        if (!state.Map.CanMoveDownToNextLevel(state.Player))
+        {
+            return false;
+        }
+
+        DungeonMap newMap = generator.CreateMap();
+        generator.PlaceMonsters(newMap, state.Level + 1);
+        state.ChangeLevel(newMap);
+        return true;
     }
 }

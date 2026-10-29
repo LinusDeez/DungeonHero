@@ -20,6 +20,9 @@ public static class MapRenderer
             DrawDoor(door, state.Map, console);
         }
 
+        DrawStairs(state.Map.StairsUp, state.Map, console);
+        DrawStairs(state.Map.StairsDown, state.Map, console);
+
         foreach (Monster monster in state.Map.Monsters)
         {
             DrawMonster(monster, state.Map, console);
@@ -88,6 +91,25 @@ public static class MapRenderer
         else
         {
             console.SetGlyph(door.X, door.Y, glyph, Colors.Door, Colors.DoorBackground);
+        }
+    }
+
+    private static void DrawStairs(Stairs? stairs, DungeonMap map, SadConsole.Console console)
+    {
+        if (stairs == null || !map.GetCell(stairs.X, stairs.Y).IsExplored)
+        {
+            return;
+        }
+
+        char glyph = stairs.IsUp ? '<' : '>';
+
+        if (map.IsInFov(stairs.X, stairs.Y))
+        {
+            console.SetGlyph(stairs.X, stairs.Y, glyph, Colors.Player, Colors.FloorBackgroundFov);
+        }
+        else
+        {
+            console.SetGlyph(stairs.X, stairs.Y, glyph, Colors.Floor, Colors.FloorBackground);
         }
     }
 }

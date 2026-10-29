@@ -17,6 +17,7 @@ public static class StatsRenderer
         console.Print(1, 5, $"Attack:   {player.Attack} ({player.AttackChance}%)", Colors.Text);
         console.Print(1, 7, $"Defense:  {player.Defense} ({player.DefenseChance}%)", Colors.Text);
         console.Print(1, 9, $"Gold:     {player.Gold}", Colors.Gold);
+        console.Print(1, 11, $"Level:   {state.Level}", Colors.Text);
 
         int i = 0;
         foreach (Monster monster in state.Map.GetMonstersInFov())
