@@ -29,11 +29,11 @@ public static class StatsRenderer
 
     private static void DrawMonsterStats(Monster monster, int y, SadConsole.Console console)
     {
-        // Zeile 1: Symbol und Name
+        // Line 1: glyph and name
         console.Print(1, y, MonsterLook.Glyph(monster).ToString(), MonsterLook.Color(monster));
         console.Print(2, y, $": {monster.Name}", Colors.Text);
 
-        // Zeile 2: Balken
+        // Line 2: Bar
         const int barX = 3;
         const int barWidth = 10;
         int barY = y + 1;
@@ -44,7 +44,7 @@ public static class StatsRenderer
         console.Fill(barX, barY, width, background: Colors.HealthBar);
         console.Fill(barX + width, barY, remainingWidth, background: Colors.HealthBarEmpty);
 
-        // Text in die Mitte des Balkens
+        // Center text inside the bar
         string text = $"{monster.Health}/{monster.MaxHealth}";
         int textX = barX + (barWidth - text.Length) / 2;
         console.Print(textX, barY, text, Colors.Text);

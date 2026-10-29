@@ -8,7 +8,7 @@ public class StairsTests
         var a = new Stairs(5, 7, IsUp: false);
         var b = new Stairs(5, 7, IsUp: false);
 
-        // Record: Werte zählen, nicht das Objekt
+        // Records compare by value, not by reference.
         Assert.Equal(a, b);
     }
 
@@ -27,7 +27,6 @@ public class StairsTests
     [Fact]
     public void CanMoveDownToNextLevel_PlayerElsewhere_ReturnsFalse()
     {
-        // TODO: wie oben, aber der Spieler steht woanders
         var map = TestMaps.CreateOpenMap(80, 48);
         map.StairsDown = new Stairs(12, 10, IsUp: false);
         var player = new Player();
