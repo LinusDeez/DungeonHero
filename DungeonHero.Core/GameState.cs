@@ -3,11 +3,11 @@ namespace DungeonHero.Core;
 public class GameState
 {
     public DungeonMap Map { get; private set; }
-    public Player Player {get; }
+    public int Level { get; private set; } = 1;
+    public Player Player { get; }
     public MessageLog Messages { get; } = new();
     public SchedulingSystem Schedule { get; } = new();
     public bool GameIsOver => Player.Health <= 0;
-    public int Level { get; private set; } = 1;
 
     public GameState(DungeonMap map, Player player)
     {
@@ -15,7 +15,7 @@ public class GameState
         Player = player;
 
         Schedule.Add(player);
-        ScheduleMonster();
+        ScheduleMonsters();
     }
 
     public void ChangeLevel(DungeonMap newMap)
@@ -24,11 +24,11 @@ public class GameState
         Level++;
         Schedule.Clear();
         Map.PlacePlayer(Player);
-        ScheduleMonster();
+        ScheduleMonsters();
         Messages.Add($"You descend to level {Level}.");
     }
 
-    private void ScheduleMonster()
+    private void ScheduleMonsters()
     {
         foreach (Monster monster in Map.Monsters)
         {

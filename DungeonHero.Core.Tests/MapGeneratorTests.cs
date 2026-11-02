@@ -6,12 +6,6 @@ namespace DungeonHero.Core.Tests;
 
 public class MapGeneratorTests
 {
-    private static DungeonMap CreateMap(int seed)
-    {
-        var generator = new MapGenerator(80, 48, 20, 13, 7, new DotNetRandom(seed));
-        return generator.CreateMap();
-    }
-
     [Fact]
     public void CreateMap_HasCorrectSize()
     {
@@ -38,7 +32,6 @@ public class MapGeneratorTests
         Assert.Equal(first.ToString(), second.ToString());
     }
 
-    // TODO: CreateMap_RoomCenterIsWalkable
     [Fact]
     public void CreateMap_RoomCenterIsWalkable()
     {
@@ -46,18 +39,6 @@ public class MapGeneratorTests
         var room = map.Rooms[0];
 
         Assert.True(map.IsWalkable(room.Center.X, room.Center.Y));
-    }
-
-    [Fact]
-    public void PlacePlayer_PutsPlayerInFirstRoomCenter()
-    {
-        var map = CreateMap(seed: 42);
-        var player = new Player();
-
-        map.PlacePlayer(player);
-
-        Assert.Equal(map.Rooms[0].Center.X, player.X);
-        Assert.Equal(map.Rooms[0].Center.Y, player.Y);
     }
 
     [Fact]
@@ -77,7 +58,7 @@ public class MapGeneratorTests
     [Fact]
     public void CreateMap_HasDoors()
     {
-        var map = CreateMap(42);
+        var map = CreateMap(seed: 42);
 
         Assert.NotEmpty(map.Doors);
     }
@@ -85,11 +66,28 @@ public class MapGeneratorTests
     [Fact]
     public void CreateMap_StairsDownInLastRoomCenter()
     {
-        var map = CreateMap(42);
+        var map = CreateMap(seed: 42);
 
         Assert.NotNull(map.StairsDown);
         Assert.Equal(map.Rooms[^1].Center.X, map.StairsDown.X);
         Assert.Equal(map.Rooms[^1].Center.Y, map.StairsDown.Y);
     }
 
+    [Fact]
+    public void PlacePlayer_PutsPlayerInFirstRoomCenter()
+    {
+        var map = CreateMap(seed: 42);
+        var player = new Player();
+
+        map.PlacePlayer(player);
+
+        Assert.Equal(map.Rooms[0].Center.X, player.X);
+        Assert.Equal(map.Rooms[0].Center.Y, player.Y);
+    }
+
+    private static DungeonMap CreateMap(int seed)
+    {
+        var generator = new MapGenerator(80, 48, 20, 13, 7, new DotNetRandom(seed));
+        return generator.CreateMap();
+    }
 }

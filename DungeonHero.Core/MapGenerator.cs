@@ -35,7 +35,7 @@ public class MapGenerator(int width, int height, int maxRooms, int roomMaxSize, 
 
         for (int r = 1; r < map.Rooms.Count; r++)
         {
-            var previous = map.Rooms[r-1].Center;
+            var previous = map.Rooms[r - 1].Center;
             var current = map.Rooms[r].Center;
 
             if (random.Next(1, 2) == 1)
@@ -75,7 +75,7 @@ public class MapGenerator(int width, int height, int maxRooms, int roomMaxSize, 
                 {
                     Point? location = map.GetRandomWalkableLocationInRoom(room, random);
 
-                if (location.HasValue)
+                    if (location.HasValue)
                     {
                         var goblin = Goblin.Create(level, random);
                         goblin.X = location.Value.X;
@@ -87,12 +87,11 @@ public class MapGenerator(int width, int height, int maxRooms, int roomMaxSize, 
         }
     }
 
-
     private static void CreateRoom(DungeonMap map, Rectangle room)
     {
         for (int x = room.Left + 1; x < room.Right; x++)
         {
-            for (int y = room.Top +1; y < room.Bottom; y++)
+            for (int y = room.Top + 1; y < room.Bottom; y++)
             {
                 map.SetCellProperties(x, y, true, true, false);
             }
@@ -159,7 +158,7 @@ public class MapGenerator(int width, int height, int maxRooms, int roomMaxSize, 
         if (isSideWallGap || isTopBottomWallGap)
         {
             map.AddDoor(new Door(x, y));
-        } 
+        }
     }
 
     private static void CreateStairs(DungeonMap map)

@@ -13,15 +13,19 @@ public static class Colors
     public static Color Wall { get; } = Swatch.Secondary;
     public static Color WallBackgroundFov { get; } = Swatch.SecondaryDarker;
     public static Color WallFov { get; } = Swatch.SecondaryLighter;
-    public static Color TextHeading { get; } = Swatch.DbLight;
+
+    public static Color DoorBackground { get; } = Swatch.ComplimentDarkest;
+    public static Color Door { get; } = Swatch.ComplimentLighter;
+    public static Color DoorBackgroundFov { get; } = Swatch.ComplimentDarker;
+    public static Color DoorFov { get; } = Swatch.ComplimentLightest;
+
     public static Color Player { get; } = Swatch.DbLight;
-    public static Color Text { get; } = Color.White;
-    public static Color Gold { get; } = Swatch.DbSun;
     public static Color Goblin { get; } = Swatch.DbBrightWood;
+
     public static Color HealthBar { get; } = Swatch.DbBlood;
     public static Color HealthBarEmpty { get; } = Swatch.DbOldBlood;
-    public static Color Door { get; } = Swatch.ComplimentLighter;
-    public static Color DoorBackground { get; } = Swatch.ComplimentDarkest;
-    public static Color DoorFov { get; } = Swatch.ComplimentLightest;
-    public static Color DoorBackgroundFov { get; } = Swatch.ComplimentDarker;
+
+    public static Color Text { get; } = Color.White;
+    public static Color TextHeading { get; } = Swatch.DbLight;
+    public static Color Gold { get; } = Swatch.DbSun;
 }

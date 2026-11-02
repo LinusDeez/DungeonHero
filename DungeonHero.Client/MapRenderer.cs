@@ -62,18 +62,6 @@ public static class MapRenderer
         }
     }
 
-    private static void DrawMonster(Monster monster, DungeonMap map, SadConsole.Console console)
-    {
-        if (map.IsInFov(monster.X, monster.Y))
-        {
-            console.SetGlyph(monster.X, monster.Y, MonsterLook.Glyph(monster), MonsterLook.Color(monster), Colors.FloorBackgroundFov);
-        }
-        else if (map.GetCell(monster.X, monster.Y).IsExplored)
-        {
-            console.SetGlyph(monster.X, monster.Y, '.', Colors.Floor, Colors.FloorBackground);
-        }
-    }
-
     private static void DrawDoor(Door door, DungeonMap map, SadConsole.Console console)
     {
         ICell cell = map.GetCell(door.X, door.Y);
@@ -110,6 +98,18 @@ public static class MapRenderer
         else
         {
             console.SetGlyph(stairs.X, stairs.Y, glyph, Colors.Floor, Colors.FloorBackground);
+        }
+    }
+
+    private static void DrawMonster(Monster monster, DungeonMap map, SadConsole.Console console)
+    {
+        if (map.IsInFov(monster.X, monster.Y))
+        {
+            console.SetGlyph(monster.X, monster.Y, MonsterLook.Glyph(monster), MonsterLook.Color(monster), Colors.FloorBackgroundFov);
+        }
+        else if (map.GetCell(monster.X, monster.Y).IsExplored)
+        {
+            console.SetGlyph(monster.X, monster.Y, '.', Colors.Floor, Colors.FloorBackground);
         }
     }
 }

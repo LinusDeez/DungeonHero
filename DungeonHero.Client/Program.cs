@@ -15,7 +15,6 @@ var player = new Player();
 map.PlacePlayer(player);
 generator.PlaceMonsters(map, 1);
 
-
 var gameState = new GameState(map, player);
 gameState.Messages.Add("The rogue arrives on level 1");
 gameState.Messages.Add($"Level created with seed '{seed}'");
@@ -30,10 +29,10 @@ Builder config = new Builder()
     .IsStartingScreenFocused(true)
     .ConfigureFonts((fonts, host) => fonts.UseCustomFont(fontPath))
     .OnStart((sender, host) =>
-     {
+    {
         host.Keyboard.InitialRepeatDelay = TimeSpan.FromMilliseconds(150);
-        host.Keyboard.RepeatDelay = TimeSpan.FromMilliseconds(200); 
-     });
+        host.Keyboard.RepeatDelay = TimeSpan.FromMilliseconds(200);
+    });
 
 Game.Create(config);
 Game.Instance.Run();

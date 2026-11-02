@@ -23,6 +23,6 @@ public class FieldOfViewTests
 
         map.UpdatePlayerFov(player);
 
-        Assert.False(map.IsInFov(70,40));
+        Assert.False(map.IsInFov(70, 40));
     }
 }

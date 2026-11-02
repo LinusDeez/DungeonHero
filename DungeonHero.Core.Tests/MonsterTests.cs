@@ -59,6 +59,4 @@ public class MonsterTests
 
         Assert.Single(map.GetMonstersInFov());
     }
-
-
 }

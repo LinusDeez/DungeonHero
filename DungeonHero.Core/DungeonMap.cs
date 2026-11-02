@@ -14,15 +14,10 @@ public class DungeonMap : Map
     public Stairs? StairsUp { get; set; }
     public Stairs? StairsDown { get; set; }
 
-    private void OpenDoor(Actor actor, int x, int y)
+    public void SetIsWalkable(int x, int y, bool isWalkable)
     {
-        Door? door = GetDoor(x, y);
-        if (door != null && !door.IsOpen)
-        {
-            door.IsOpen = true;
-            ICell cell = GetCell(x, y);
-            SetCellProperties(x, y, isTransparent: true, cell.IsWalkable, cell.IsExplored);
-        }
+        ICell cell = GetCell(x, y);
+        SetCellProperties(cell.X, cell.Y, cell.IsTransparent, isWalkable, cell.IsExplored);
     }
 
     public void UpdatePlayerFov(Player player)
@@ -38,10 +33,19 @@ public class DungeonMap : Map
         }
     }
 
-    public void SetIsWalkable(int x, int y, bool isWalkable)
+    public Point? GetRandomWalkableLocationInRoom(Rectangle room, IRandom random)
     {
-        ICell cell = GetCell(x, y);
-        SetCellProperties(cell.X, cell.Y, cell.IsTransparent, isWalkable, cell.IsExplored);
+        for (int i = 0; i < 100; i++)
+        {
+            int x = random.Next(room.Left + 1, room.Right - 1);
+            int y = random.Next(room.Top + 1, room.Bottom - 1);
+
+            if (IsWalkable(x, y))
+            {
+                return new Point(x, y);
+            }
+        }
+        return null;
     }
 
     public void PlacePlayer(Player player)
@@ -49,7 +53,6 @@ public class DungeonMap : Map
         player.X = Rooms[0].Center.X;
         player.Y = Rooms[0].Center.Y;
         SetActorPosition(player, player.X, player.Y);
-
     }
 
     public bool SetActorPosition(Actor actor, int x, int y)
@@ -64,7 +67,7 @@ public class DungeonMap : Map
         actor.Y = y;
         SetIsWalkable(actor.X, actor.Y, false);
 
-        OpenDoor(actor, x, y);
+        OpenDoor(x, y);
 
         if (actor is Player player)
         {
@@ -80,26 +83,10 @@ public class DungeonMap : Map
         SetIsWalkable(monster.X, monster.Y, false);
     }
 
-    public Point? GetRandomWalkableLocationInRoom(Rectangle room, IRandom random)
+    public void RemoveMonster(Monster monster)
     {
-        for (int i = 0; i < 100; i++)
-        {
-            int x = random.Next(room.Left + 1, room.Right - 1);
-            int y = random.Next(room.Top + 1, room.Bottom - 1);
-
-            if (IsWalkable(x, y))
-            {
-                return new Point(x, y);
-            }
-            
-        }
-
-        return null;
-    }
-
-    public IEnumerable<Monster> GetMonstersInFov()
-    {
-        return _monsters.Where(monster => IsInFov(monster.X, monster.Y));
+        _monsters.Remove(monster);
+        SetIsWalkable(monster.X, monster.Y, true);
     }
 
     public Monster? GetMonsterAt(int x, int y)
@@ -107,10 +94,9 @@ public class DungeonMap : Map
         return _monsters.FirstOrDefault(monster => monster.X == x && monster.Y == y);
     }
 
-    public void RemoveMonster(Monster monster)
+    public IEnumerable<Monster> GetMonstersInFov()
     {
-        _monsters.Remove(monster);
-        SetIsWalkable(monster.X, monster.Y, true);
+        return _monsters.Where(monster => IsInFov(monster.X, monster.Y));
     }
 
     public void AddDoor(Door door)
@@ -123,6 +109,17 @@ public class DungeonMap : Map
     public Door? GetDoor(int x, int y)
     {
         return _doors.FirstOrDefault(door => door.X == x && door.Y == y);
+    }
+
+    private void OpenDoor(int x, int y)
+    {
+        Door? door = GetDoor(x, y);
+        if (door != null && !door.IsOpen)
+        {
+            door.IsOpen = true;
+            ICell cell = GetCell(x, y);
+            SetCellProperties(x, y, isTransparent: true, cell.IsWalkable, cell.IsExplored);
+        }
     }
 
     public bool CanMoveDownToNextLevel(Player player)

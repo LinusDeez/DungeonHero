@@ -6,13 +6,6 @@ namespace DungeonHero.Core.Tests;
 
 public class CommandSystemTests
 {
-    private static CommandSystem CreateCommands(GameState state)
-    {
-        var random = new DotNetRandom(42);
-        var generator = new MapGenerator(80, 48, 20, 13, 7, random);
-        return new CommandSystem(state, generator, random);
-    }
-
     [Fact]
     public void MovePlayer_Right_IncreasesX()
     {
@@ -40,7 +33,7 @@ public class CommandSystemTests
         var commands = CreateCommands(new GameState(map, player));
 
         bool moved = commands.MovePlayer(Direction.Left);
-        
+
         Assert.False(moved);
         Assert.Equal(1, player.X);
     }
@@ -169,5 +162,12 @@ public class CommandSystemTests
         commands.EndPlayerTurn();
 
         Assert.Equal(14, goblin.X);
+    }
+
+    private static CommandSystem CreateCommands(GameState state)
+    {
+        var random = new DotNetRandom(42);
+        var generator = new MapGenerator(80, 48, 20, 13, 7, random);
+        return new CommandSystem(state, generator, random);
     }
 }
